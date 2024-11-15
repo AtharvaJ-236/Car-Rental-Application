@@ -1,0 +1,41 @@
+
+#Cars Database:
+import sqlite3
+
+# Function to create cars table in the database
+def car_info_table():
+    conn = sqlite3.connect('car_rental.db')
+    print("Database Created")
+    cur = conn.cursor()
+    print("Cursor Created")
+    
+    cur.execute('''CREATE TABLE IF NOT EXISTS Cars
+                 (id INTEGER PRIMARY KEY, 
+                  Car_name varchar(30), 
+                  Car_number varchar(10), 
+                  Car_rent int, 
+                  Fuel_type varchar(7), 
+                  Car_seat int,
+                  Car_transmission varchar(9))''')
+    
+    print("Cars Table Created")
+    
+    # Insert sample data into the Cars table
+    customers_data = [('Scorpio', 'MH48BT0001', 1200, 'petrol', 9, 'Manual')]
+    
+    print("Data inserted successfully")
+
+    cur.executemany('''INSERT INTO Cars 
+                     (Car_name, Car_number, Car_rent, Fuel_type, Car_seat, Car_transmission) 
+                     VALUES (?, ?, ?, ?, ?, ?)''', cars_data)
+
+    # Insert a single record
+    cur.execute("INSERT INTO Cars (Car_name, Car_number, Car_rent, Fuel_type, Car_seat, Car_transmission) VALUES (?, ?, ?, ?, ?, ?)",
+                ('Thar', 'MH48BT0002', 1000, 'petrol', 5, 'Manual'))
+    print("Value inserted successfully")
+    
+    conn.commit()
+    conn.close()
+
+# Initialize the database and create the Cars table
+car_info_table()
